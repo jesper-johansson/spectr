@@ -1,0 +1,5 @@
+export default {
+  HOME_LOAD: 'HOME_LOAD',
+  FETCH_SITES: 'FETCH_SITES',
+  GET_SITES: 'GET_SITES',
+};
