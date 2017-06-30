@@ -6,7 +6,8 @@ import actions from '../actions';
 class Home extends React.Component {
   static mapStateToProps = state => ({
     loaded: state.home.loaded,
-    sites: state.sites.sites,
+    paths: state.sites.paths,
+    ip: state.sites.ip,
   });
 
   componentDidMount() {
@@ -17,7 +18,10 @@ class Home extends React.Component {
   render() {
     return (
       <View>
-        <Text>{this.props.sites ? this.props.sites : 'false'}</Text>
+        <Text>{console.log(this.props.paths)}</Text>
+        <Text>{this.props.paths ? this.props.paths : 'false'}</Text>
+        <Text>{console.log(this.props.ip)}</Text>
+        <Text>{this.props.ip ? this.props.ip : 'false'}</Text>
       </View>
     );
   }

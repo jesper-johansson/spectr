@@ -1,9 +1,17 @@
-const sites = (state = { sites: [] }, action) => {
+import CONSTANTS from '../constants';
+
+const defaultState = {
+  paths: [],
+  ip: [],
+};
+
+const sites = (state = defaultState, action) => {
   switch (action.type) {
-    case 'GET_SITES':
+    case CONSTANTS.GET_SITES:
       return {
         ...state,
-        sites: action.sites,
+        paths: action.paths,
+        ip: action.ip,
       };
 
     default:
