@@ -27,6 +27,13 @@ const sites = (state = defaultState, action) => {
         ],
       };
 
+    case CONSTANTS.UPDATE_SITES_FETCH_PROGRESS:
+      return {
+        ...state,
+        progressActive: action.progressActive,
+        progressPercent: action.progressPercent,
+      };
+
     default:
       return state;
   }

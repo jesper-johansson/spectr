@@ -2,6 +2,10 @@ import Network from './methods/Network';
 import CONSTANTS from '../constants';
 
 const defaults = {
+  updateSitesFetchProgress: {
+    progressActive: false,
+    progressPercent: 0,
+  },
   getSites: {
     paths: [],
     ips: [],
@@ -11,6 +15,15 @@ const defaults = {
     ip: '',
   },
 };
+
+const updateSitesFetchProgress = (
+  progressActive = defaults.updateSitesFetchProgress.progressActive,
+  progressPercent = defaults.updateSitesFetchProgress.progressPercent,
+) => ({
+  type: CONSTANTS.UPDATE_SITES_FETCH_PROGRESS,
+  progressActive,
+  progressPercent: Math.ceil((progressPercent / 255) * 100),
+});
 
 const getSites = (
   paths = defaults.getSites.paths,
@@ -34,5 +47,16 @@ const insertSite = (
   ip,
 });
 
-export default { getSites, fetchSites, insertSite };
-export { getSites, fetchSites, insertSite };
+export default {
+  getSites,
+  fetchSites,
+  insertSite,
+  updateSitesFetchProgress,
+};
+
+export {
+  getSites,
+  fetchSites,
+  insertSite,
+  updateSitesFetchProgress,
+};

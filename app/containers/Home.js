@@ -8,6 +8,8 @@ class Home extends React.Component {
     loaded: state.home.loaded,
     paths: state.sites.paths,
     ips: state.sites.ips,
+    progressActive: state.sites.progressActive,
+    progressPercent: state.sites.progressPercent,
   });
 
   componentDidMount() {
@@ -16,12 +18,14 @@ class Home extends React.Component {
   }
 
   render() {
+    const prog = this.props.progressActive ? <Text>Progress: {this.props.progressPercent} %</Text> : null;
     return (
       <View>
         <Text />
         <Text />
         <Text>Path: {this.props.paths}</Text>
         <Text>IP: {this.props.ips}</Text>
+        {prog}
       </View>
     );
   }

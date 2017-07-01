@@ -2,6 +2,10 @@ import { sites } from '../';
 import DeviceNetwork from '../../native/DeviceNetwork';
 
 class Network {
+  static progressActive = false;
+  static progressPercent = 0;
+  static limit = 255;
+
   static getBaseFromIp(ip) {
     const strPositions = {
       start: 0,
@@ -11,33 +15,54 @@ class Network {
     return ip.substr(strPositions.start, strPositions.end);
   }
 
-  static sendRequest(url, ip, timeout) {
+  static sendRequest(requestProperties) {
     return new Promise((resolve, reject) => {
-      fetch(url)
-        .then((resp) => {
-          if (resp && resp.status === 200) resolve(ip);
-        })
+      fetch(requestProperties.url)
+        .then(() => resolve(requestProperties.ip))
         .catch(() => reject());
 
-      setTimeout(() => reject(), timeout);
+      setTimeout(() => reject(), requestProperties.timeout);
     });
   }
 
   static fetchIps(dispatch) {
+    console.log('fetching ips');
     const activeIps = [];
 
     DeviceNetwork.getIp()
       .then((deviceIp) => {
         const base = Network.getBaseFromIp(deviceIp);
 
-        for (let i = 8; i < 10; i += 1) {
-          const request = Network.sendRequest(`http://${base}${i}:3000/__browser_sync__?method=notify`, `${base}${i}`, 500);
-          request.then(foundIp => dispatch(sites.insertSite(undefined, foundIp)))
-          .catch(() => null); // DO NOT TRY THIS AT HOME
+        for (let i = 0; i < Network.limit; i += 1) {
+          const requestProperties = {
+            url: `http://${base}${i}:3000/__browser_sync__?method=notify`,
+            ip: `${base}${i}`,
+            timeout: 500,
+          };
+
+          const request = Network.sendRequest(requestProperties);
+          Network.dispatchActions(request, dispatch);
         }
       });
 
     return activeIps;
+  }
+
+  static dispatchActions(request, dispatch) {
+    request.then((foundIp) => {
+      Network.updateProgress();
+      dispatch(sites.insertSite(undefined, foundIp));
+      dispatch(sites.updateSitesFetchProgress(Network.progressActive, Network.progressPercent));
+    })
+    .catch(() => {
+      Network.updateProgress();
+      dispatch(sites.updateSitesFetchProgress(Network.progressActive, Network.progressPercent));
+    });
+  }
+
+  static updateProgress() {
+    Network.progressPercent = Network.progressPercent < Network.limit ? Network.progressPercent += 1 : 0;
+    Network.progressActive = Network.progressPercent > 0 && Network.progressPercent < Network.limit;
   }
 }
 
