@@ -1,8 +1,12 @@
 import home from './home';
-import { getSites, fetchSites } from './sites';
+import sites from './sites';
 
 export default {
   home,
-  getSites,
-  fetchSites,
+  sites,
+};
+
+export {
+  home,
+  sites,
 };

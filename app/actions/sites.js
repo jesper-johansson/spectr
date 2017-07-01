@@ -1,30 +1,38 @@
-// import axios from 'axios';
 import Network from './methods/Network';
 import CONSTANTS from '../constants';
 
 const defaults = {
   getSites: {
     paths: [],
-    ip: [],
+    ips: [],
+  },
+  insertSite: {
+    path: '',
+    ip: '',
   },
 };
 
 const getSites = (
   paths = defaults.getSites.paths,
-  ip = defaults.getSites.ip,
+  ips = defaults.getSites.ip,
 ) => ({
   type: CONSTANTS.GET_SITES,
   paths,
-  ip,
+  ips,
 });
 
 const fetchSites = () => (
-  (dispatch) => {
-    const ip = Network.fetchIp();
-    console.log(ip);
-    return dispatch(getSites());
-  }
+  async dispatch => Network.fetchIps(dispatch)
 );
 
-export default { getSites, fetchSites };
-export { getSites, fetchSites };
+const insertSite = (
+  path = defaults.insertSite.path,
+  ip = defaults.insertSite.ip,
+) => ({
+  type: CONSTANTS.INSERT_SITE,
+  path,
+  ip,
+});
+
+export default { getSites, fetchSites, insertSite };
+export { getSites, fetchSites, insertSite };

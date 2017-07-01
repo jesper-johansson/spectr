@@ -2,7 +2,7 @@ import CONSTANTS from '../constants';
 
 const defaultState = {
   paths: [],
-  ip: [],
+  ips: [],
 };
 
 const sites = (state = defaultState, action) => {
@@ -11,7 +11,20 @@ const sites = (state = defaultState, action) => {
       return {
         ...state,
         paths: action.paths,
-        ip: action.ip,
+        ips: action.ips,
+      };
+
+    case CONSTANTS.INSERT_SITE:
+      return {
+        ...state,
+        paths: [
+          ...state.paths,
+          ...action.path,
+        ],
+        ips: [
+          ...state.ips,
+          ...action.ip,
+        ],
       };
 
     default:
