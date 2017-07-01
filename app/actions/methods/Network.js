@@ -6,6 +6,7 @@ class Network {
   static progressPercent = 0;
   static limit = 255;
 
+  // Remove the last IP range for use in loop
   static getBaseFromIp(ip) {
     const strPositions = {
       start: 0,
@@ -15,6 +16,7 @@ class Network {
     return ip.substr(strPositions.start, strPositions.end);
   }
 
+  // Promise fetch with timeout
   static sendRequest(requestProperties) {
     return new Promise((resolve, reject) => {
       fetch(requestProperties.url)
@@ -25,8 +27,8 @@ class Network {
     });
   }
 
+  // Main entry to fetch device IP and loop through range
   static fetchIps(dispatch) {
-    console.log('fetching ips');
     const activeIps = [];
 
     DeviceNetwork.getIp()
@@ -48,6 +50,7 @@ class Network {
     return activeIps;
   }
 
+  // Dispatch actions inside promise resolve/reject
   static dispatchActions(request, dispatch) {
     request.then((foundIp) => {
       Network.updateProgress();
