@@ -3,6 +3,8 @@ import CONSTANTS from '../constants';
 const defaultState = {
   paths: [],
   ips: [],
+  progressActive: false,
+  progressPercent: 0,
 };
 
 const sites = (state = defaultState, action) => {

@@ -1,5 +1,6 @@
 import { sites } from '../';
 import DeviceNetwork from '../../native/DeviceNetwork';
+import Socket from './Socket';
 
 class Network {
   static progressActive = false;
@@ -39,7 +40,7 @@ class Network {
           const requestProperties = {
             url: `http://${base}${i}:3000/__browser_sync__?method=notify`,
             ip: `${base}${i}`,
-            timeout: 500,
+            timeout: 1000,
           };
 
           const request = Network.sendRequest(requestProperties);
@@ -54,8 +55,12 @@ class Network {
   static dispatchActions(request, dispatch) {
     request.then((foundIp) => {
       Network.updateProgress();
-      dispatch(sites.insertSite(undefined, foundIp));
       dispatch(sites.updateSitesFetchProgress(Network.progressActive, Network.progressPercent));
+      Socket.getPath(foundIp)
+        .then((path) => {
+          console.log(path);
+          dispatch(sites.insertSite(path, foundIp));
+        });
     })
     .catch(() => {
       Network.updateProgress();
