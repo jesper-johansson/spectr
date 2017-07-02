@@ -1,8 +1,7 @@
 import CONSTANTS from '../constants';
 
 const defaultState = {
-  paths: [],
-  ips: [],
+  items: [],
   progressActive: false,
   progressPercent: 0,
 };
@@ -12,20 +11,19 @@ const sites = (state = defaultState, action) => {
     case CONSTANTS.GET_SITES:
       return {
         ...state,
-        paths: action.paths,
-        ips: action.ips,
+        items: action.items,
       };
 
     case CONSTANTS.INSERT_SITE:
       return {
         ...state,
-        paths: [
-          ...state.paths,
-          ...action.path,
-        ],
-        ips: [
-          ...state.ips,
-          ...action.ip,
+        items: [
+          ...state.items,
+          {
+            key: action.key,
+            ip: action.ip,
+            path: action.path,
+          },
         ],
       };
 

@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { home, sites } from '../actions';
+import RowItem from '../presentational/RowItem';
+import Progress from '../presentational/Progress';
+import styles from '../styles';
 
 class Home extends React.Component {
   static mapStateToProps = state => ({
     loaded: state.home.loaded,
-    paths: state.sites.paths,
-    ips: state.sites.ips,
+    items: state.sites.items,
     progressActive: state.sites.progressActive,
     progressPercent: state.sites.progressPercent,
   });
@@ -18,14 +20,13 @@ class Home extends React.Component {
   }
 
   render() {
-    const prog = this.props.progressActive ? <Text>Progress: {this.props.progressPercent} %</Text> : null;
     return (
-      <View>
-        <Text />
-        <Text />
-        <Text>Path: {this.props.paths}</Text>
-        <Text>IP: {this.props.ips}</Text>
-        {prog}
+      <View style={styles.containers.home}>
+        <FlatList
+          data={this.props.items}
+          renderItem={({ item }) => <RowItem path={item.path} ip={item.ip} key={item.id} />}
+        />
+        {this.props.progressPercent < 100 && this.props.progressPercent > 0 ? <Progress percent={this.props.progressPercent} /> : null}
       </View>
     );
   }

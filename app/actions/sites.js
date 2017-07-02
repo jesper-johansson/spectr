@@ -7,10 +7,10 @@ const defaults = {
     progressPercent: 0,
   },
   getSites: {
-    paths: [],
-    ips: [],
+    items: [],
   },
   insertSite: {
+    key: '',
     path: '',
     ip: '',
   },
@@ -26,12 +26,10 @@ const updateSitesFetchProgress = (
 });
 
 const getSites = (
-  paths = defaults.getSites.paths,
-  ips = defaults.getSites.ip,
+  items = defaults.getSites.items,
 ) => ({
   type: CONSTANTS.GET_SITES,
-  paths,
-  ips,
+  items,
 });
 
 const fetchSites = () => (
@@ -39,10 +37,12 @@ const fetchSites = () => (
 );
 
 const insertSite = (
+  key = defaults.insertSite.key,
   path = defaults.insertSite.path,
   ip = defaults.insertSite.ip,
 ) => ({
   type: CONSTANTS.INSERT_SITE,
+  key,
   path,
   ip,
 });

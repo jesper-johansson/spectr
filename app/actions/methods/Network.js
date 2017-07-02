@@ -58,8 +58,7 @@ class Network {
       dispatch(sites.updateSitesFetchProgress(Network.progressActive, Network.progressPercent));
       Socket.getPath(foundIp)
         .then((path) => {
-          console.log(path);
-          dispatch(sites.insertSite(path, foundIp));
+          dispatch(sites.insertSite(foundIp, path, foundIp));
         });
     })
     .catch(() => {

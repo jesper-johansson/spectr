@@ -1,3 +1,4 @@
 import containers from './containers';
+import presentational from './presentational';
 
-export default { containers };
+export default { containers, presentational };
