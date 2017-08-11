@@ -22,6 +22,7 @@ const sites = (state = defaultState, action) => {
           {
             key: action.key,
             ip: action.ip,
+            absolutePath: action.absolutePath,
             path: action.path,
             mode: action.mode,
           },

@@ -44,7 +44,7 @@ class Network {
             const requestProperties = {
               url: `http://${base}${i}:300${p}/__browser_sync__?method=notify`,
               ip: `${base}${i}:300${p}`,
-              timeout: 2000,
+              timeout: 4000,
             };
 
             const request = Network.sendRequest(requestProperties);
@@ -61,7 +61,9 @@ class Network {
     request.then((foundIp) => {
       Socket.getPath(foundIp)
         .then((session) => {
-          dispatch(sites.insertSite(foundIp, session.path, foundIp, session.mode));
+          dispatch(sites.insertSite(
+            foundIp, session.absolutePath, session.path, foundIp, session.mode,
+          ));
           Network.updateProgress(dispatch);
         })
         .catch(() => null);

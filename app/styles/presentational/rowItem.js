@@ -1,35 +1,31 @@
 import { StyleSheet } from 'react-native';
 
 const rowItem = {
-  flexDirection: 'row',
-  marginBottom: 8,
-  paddingRight: 11,
-  paddingLeft: 11,
-  display: 'flex',
-  height: 40,
+  marginRight: 2,
+  marginLeft: 2,
+  paddingTop: 25,
+  paddingRight: 15,
+  paddingBottom: 25,
+  paddingLeft: 15,
+  borderWidth: 1,
+  borderColor: '#e8e8ec',
   backgroundColor: '#ffffff',
 };
 
-const rowItemColumn = {
-  alignItems: 'center',
-  height: '100%',
-};
-
-const rowItemColumnRight = {
-  ...rowItemColumn,
-  width: '35%',
+const rowItemShadow = {
+  marginRight: 5,
+  marginBottom: 12,
+  marginLeft: 5,
+  height: 2,
+  backgroundColor: '#e8e8ec',
 };
 
 const rowItemColumnLeft = {
-  ...rowItemColumn,
-  width: '65%',
-  overflow: 'hidden',
 };
 
 const rowItemText = {
-  display: 'flex',
-  width: '100%',
-  lineHeight: 40,
+  fontFamily: 'Helvetica Neue',
+  fontWeight: '300',
 };
 
 const rowItemPath = {
@@ -44,7 +40,8 @@ const rowItemIp = {
 
 export default StyleSheet.create({
   rowItem,
-  rowItemColumnRight,
+  rowItemText,
+  rowItemShadow,
   rowItemColumnLeft,
   rowItemPath,
   rowItemIp,

@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
 class Socket {
-  static getPath(fromIp, timeout = 1000) {
+  static getPath(fromIp, timeout = 2000) {
     return new Promise((resolve, reject) => {
       let options;
       const socket = io(`http://${fromIp}/browser-sync-cp`, {
@@ -16,8 +16,8 @@ class Socket {
         socket.on('ui:receive:options', ({ bs }) => {
           options = bs;
           const latestPath = paths[0] ? paths[0].path : '/';
-          const path = options.proxy ? `${options.proxy.target}${latestPath}` : `${options.scheme}://localhost:${options.port}${latestPath}`;
-          return resolve({ path, mode: options.mode });
+          const fullPath = options.proxy ? `${options.proxy.target}${latestPath}` : `${options.scheme}://localhost:${options.port}${latestPath}`;
+          return resolve({ absolutePath: fullPath, path: latestPath, mode: options.mode });
         });
       });
 

@@ -11,6 +11,7 @@ const defaults = {
   },
   insertSite: {
     key: '',
+    absolutePath: '',
     path: '',
     ip: '',
     mode: '',
@@ -39,12 +40,14 @@ const fetchSites = () => (
 
 const insertSite = (
   key = defaults.insertSite.key,
+  absolutePath = defaults.insertSite.absolutePath,
   path = defaults.insertSite.path,
   ip = defaults.insertSite.ip,
   mode = defaults.insertSite.mode,
 ) => ({
   type: CONSTANTS.INSERT_SITE,
   key,
+  absolutePath,
   path,
   ip,
   mode,

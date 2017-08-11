@@ -23,8 +23,9 @@ class Home extends React.Component {
     return (
       <View style={styles.containers.home}>
         <FlatList
+          style={styles.containers.flatList}
           data={this.props.items}
-          renderItem={({ item }) => <RowItem path={item.path} ip={item.ip} key={item.id} mode={item.mode} />}
+          renderItem={({ item, index }) => <RowItem index={index} absolutePath={item.absolutePath} path={item.path} ip={item.ip} key={item.id} mode={item.mode} />}
         />
         {this.props.progressPercent < 100 && this.props.progressPercent > 0 ? <Progress percent={this.props.progressPercent} /> : null}
       </View>
