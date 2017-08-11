@@ -4,8 +4,10 @@ import Socket from './Socket';
 
 class Network {
   static progressActive = false;
-  static progressPercent = 0;
+  static progress = 0;
   static limit = 255;
+  static portLimit = 3;
+  static progressLimit = Network.limit * Network.portLimit;
 
   // Remove the last IP range for use in loop
   static getBaseFromIp(ip) {
@@ -34,17 +36,20 @@ class Network {
 
     DeviceNetwork.getIp()
       .then((deviceIp) => {
+        console.log('IP: ', deviceIp);
         const base = Network.getBaseFromIp(deviceIp);
 
         for (let i = 0; i < Network.limit; i += 1) {
-          const requestProperties = {
-            url: `http://${base}${i}:3000/__browser_sync__?method=notify`,
-            ip: `${base}${i}`,
-            timeout: 1000,
-          };
+          for (let p = 0; p < Network.portLimit; p += 1) {
+            const requestProperties = {
+              url: `http://${base}${i}:300${p}/__browser_sync__?method=notify`,
+              ip: `${base}${i}:300${p}`,
+              timeout: 2000,
+            };
 
-          const request = Network.sendRequest(requestProperties);
-          Network.dispatchActions(request, dispatch);
+            const request = Network.sendRequest(requestProperties);
+            Network.dispatchActions(request, dispatch);
+          }
         }
       });
 
@@ -54,22 +59,21 @@ class Network {
   // Dispatch actions inside promise resolve/reject
   static dispatchActions(request, dispatch) {
     request.then((foundIp) => {
-      Network.updateProgress();
-      dispatch(sites.updateSitesFetchProgress(Network.progressActive, Network.progressPercent));
       Socket.getPath(foundIp)
-        .then((path) => {
-          dispatch(sites.insertSite(foundIp, path, foundIp));
-        });
+        .then((session) => {
+          dispatch(sites.insertSite(foundIp, session.path, foundIp, session.mode));
+          Network.updateProgress(dispatch);
+        })
+        .catch(() => null);
     })
-    .catch(() => {
-      Network.updateProgress();
-      dispatch(sites.updateSitesFetchProgress(Network.progressActive, Network.progressPercent));
-    });
+    .catch(() => Network.updateProgress(dispatch));
   }
 
-  static updateProgress() {
-    Network.progressPercent = Network.progressPercent < Network.limit ? Network.progressPercent += 1 : 0;
-    Network.progressActive = Network.progressPercent > 0 && Network.progressPercent < Network.limit;
+  static updateProgress(dispatch) {
+    Network.progress += 1;
+    Network.progressActive = Network.progress < Network.progressLimit;
+    dispatch(sites.updateSitesFetchProgress(Network.progressActive, Network.progress));
+    if (Network.progress >= Network.progressLimit) Network.progress = 0;
   }
 }
 

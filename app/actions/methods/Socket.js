@@ -3,18 +3,25 @@ import io from 'socket.io-client';
 class Socket {
   static getPath(fromIp, timeout = 1000) {
     return new Promise((resolve, reject) => {
-      const socket = io(`http://${fromIp}:3000/browser-sync-cp`, {
+      let options;
+      const socket = io(`http://${fromIp}/browser-sync-cp`, {
         path: '/browser-sync/socket.io',
         transports: ['websocket'],
       });
 
+      socket.emit('ui:get:options');
+
       // Browsersync socket event for retrieving url history
       socket.on('ui:history:update', (paths) => {
-        if (!paths[0] || (paths[0] && !paths[0].path)) return reject('Could not resolve site path.');
-        return resolve(paths[0].path);
+        socket.on('ui:receive:options', ({ bs }) => {
+          options = bs;
+          const latestPath = paths[0] ? paths[0].path : '/';
+          const path = options.proxy ? `${options.proxy.target}${latestPath}` : `${options.scheme}://localhost:${options.port}${latestPath}`;
+          return resolve({ path, mode: options.mode });
+        });
       });
 
-      setTimeout(() => reject('Could not connect to socket.'), timeout);
+      setTimeout(() => reject('Could not connect to socket'), timeout);
     });
   }
 }

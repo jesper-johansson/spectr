@@ -7,7 +7,7 @@ const rowItem = {
   paddingLeft: 11,
   display: 'flex',
   height: 40,
-  backgroundColor: '#f5f5f5',
+  backgroundColor: '#ffffff',
 };
 
 const rowItemColumn = {
@@ -17,12 +17,12 @@ const rowItemColumn = {
 
 const rowItemColumnRight = {
   ...rowItemColumn,
-  width: '30%',
+  width: '35%',
 };
 
 const rowItemColumnLeft = {
   ...rowItemColumn,
-  width: '70%',
+  width: '65%',
   overflow: 'hidden',
 };
 

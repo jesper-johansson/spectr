@@ -13,6 +13,7 @@ const defaults = {
     key: '',
     path: '',
     ip: '',
+    mode: '',
   },
 };
 
@@ -40,11 +41,13 @@ const insertSite = (
   key = defaults.insertSite.key,
   path = defaults.insertSite.path,
   ip = defaults.insertSite.ip,
+  mode = defaults.insertSite.mode,
 ) => ({
   type: CONSTANTS.INSERT_SITE,
   key,
   path,
   ip,
+  mode,
 });
 
 export default {

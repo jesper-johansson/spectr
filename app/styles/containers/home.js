@@ -2,11 +2,10 @@ import { StyleSheet } from 'react-native';
 
 const home = {
   position: 'relative',
-  marginTop: 40,
-  paddingRight: 20,
-  paddingLeft: 20,
+  flexGrow: 1,
+  paddingTop: 40,
   display: 'flex',
-  height: 500,
+  backgroundColor: '#f7f7fb',
 };
 
 export default StyleSheet.create({ home });
