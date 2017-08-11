@@ -36,7 +36,6 @@ class Network {
 
     DeviceNetwork.getIp()
       .then((deviceIp) => {
-        console.log('IP: ', deviceIp);
         const base = Network.getBaseFromIp(deviceIp);
 
         for (let i = 0; i < Network.limit; i += 1) {
